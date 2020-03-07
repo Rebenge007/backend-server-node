@@ -5,12 +5,36 @@
 */
 var express = require('express');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 /* 
     inicializacion de variables 
     se crea la definicion del servidor express
 */
 var app = express();
+
+// body parser middleware es una función que se ejecutara siempre
+// cuando una peticion entre siempre pasara por este codigo
+// tomara la data y regresara un objeto js para ser utilizado donde sea necesario
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+    // parse application/json
+app.use(bodyParser.json())
+
+/**
+ * improtar Rutas
+ */
+var appRoutes = require('./routes/app');
+var usuarioRoutes = require('./routes/usuario');
+var loginRoutes = require('./routes/login');
+
+/**
+ * middleware
+ * se ejecuta antes de la ejecución de otras rutas
+ */
+app.use('/usuario', usuarioRoutes);
+app.use('/login', loginRoutes);
+app.use('/', appRoutes);
 
 /*
     Conexion a la base de datos  
@@ -26,19 +50,6 @@ db.once('open', function() {
 //     if (err) throw err; // detiene el proceso 
 //     console.log('Base de datos mongodb: \x1b[32m%s\x1b[0m', ' online !!!');
 // });
-
-/* 
-    Rutas  
-    Require req
-    Response res respuesta enviada a quien haga la solicitud
-    next cuando se ejecute indica seguir conla instruccion siguiente
-*/
-app.get('/', (req, res, next) => {
-    res.status(200).json({
-        ok: true,
-        mensaje: 'peticion realizaca correctamente'
-    });
-});
 
 // escuchar peticiones
 /* 
