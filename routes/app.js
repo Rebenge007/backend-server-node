@@ -14,10 +14,14 @@ var express = require('express');
  */
 var app = express();
 
+
+// ================================================================
+//  Obtener elementos
+// ================================================================
 app.get('/', (req, res, next) => {
     res.status(200).json({
         ok: true,
-        mensaje: 'peticion realizaca correctamente'
+        mensaje: 'peticion realizada correctamente'
     });
 });
 

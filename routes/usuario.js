@@ -27,12 +27,16 @@ var Usuario = require('../models/usuario');
 // Obtener Todos los Usuarios
 // ================================================================
 app.get('/', (req, res, next) => {
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
     /**
      * err: error generado por mongo,
      * usuarios: coleccion que trae la informacion que coincide con el query
      * buscara todos los registros unicamente con los campos indicados
      */
     Usuario.find({}, 'nombre apPaterno email img role')
+        .skip(desde)
+        .limit(5)
         .exec(
             (err, usuarios) => {
                 if (err) {
@@ -42,9 +46,12 @@ app.get('/', (req, res, next) => {
                         errors: err
                     });
                 }
-                res.status(200).json({
-                    ok: true,
-                    usuarios: usuarios
+                Usuario.count({}, (err, conteo) => {
+                    res.status(200).json({
+                        ok: true,
+                        usuarios: usuarios,
+                        total: conteo
+                    });
                 });
             }
         );
