@@ -2,3 +2,8 @@
 // Constantes Generales
 // ================================================================
 module.exports.SEED = 'este-es-un-seed-sencillo';
+
+// ================================================================
+// Google
+// ================================================================
+module.exports.CLIENT_ID = '944699229021-hendaf1609kumdi95r8fp7nau5tsph7u.apps.googleusercontent.com';
