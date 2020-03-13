@@ -15,7 +15,7 @@ const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
 // ================================================================
-// Autenticación De Gppgle
+// Autenticación De Google
 // ================================================================
 async function verify(token) {
     const ticket = await client.verifyIdToken({
@@ -61,10 +61,12 @@ app.post('/google', async(req, res) => {
                     mensaje: 'Debe usar su autenticacion normal'
                 })
             } else {
+                // usuario.password = ':::!!!:::';
                 var token = jwt.sign({ usuario: usuarioBD }, SEED, { expiresIn: 14400 }); // 4 hrs
 
                 res.status(200).json({
                     ok: true,
+                    mensaje: 'login google backend',
                     usuario: usuarioBD,
                     token: token,
                     id: usuarioBD._id
@@ -74,20 +76,27 @@ app.post('/google', async(req, res) => {
             var usuario = new Usuario();
 
             usuario.nombre = googleUser.nombre;
+            usuario.apPaterno = googleUser.apPaterno ? googleUser.apPaterno : '...';
             usuario.email = googleUser.email;
             usuario.img = googleUser.img;
             usuario.google = true;
             usuario.password = ':::!!!:::';
 
             usuario.save((err, usuarioBD) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: true,
+                        mensaje: 'Error al crear usuario - google',
+                        errors: err
+                    });
+                }
                 var token = jwt.sign({ usuario: usuarioBD }, SEED, { expiresIn: 14400 }); // 4 hrs
 
                 res.status(200).json({
                     ok: true,
                     usuario: usuarioBD,
                     token: token,
-                    usuarioBD
-                    // id: usuarioBD._id
+                    id: usuarioBD._id
                 });
             });
         }

@@ -13,6 +13,16 @@ var bodyParser = require('body-parser');
 */
 var app = express();
 
+// ================================================================
+// CORS
+// ================================================================
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+    next();
+});
+
 // body parser middleware es una función que se ejecutara siempre
 // cuando una peticion entre siempre pasara por este codigo
 // tomara la data y regresara un objeto js para ser utilizado donde sea necesario
