@@ -38,7 +38,9 @@ app.put('/:tipo/:id', (req, res, next) => {
         });
     }
     // Obtener el nombre del archivo
-    var archivo = req.files.image;
+    console.log('... archivo: ', req.files);
+    var archivo = req.files.imagen;
+    console.log('... archivo: ', archivo);
     var splitName = archivo.name.split('.');
     var extensionArchivo = splitName[splitName.length - 1]
         // var extensionArchivo = splitName.pop();

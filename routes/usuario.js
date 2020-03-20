@@ -34,7 +34,7 @@ app.get('/', (req, res, next) => {
      * usuarios: coleccion que trae la informacion que coincide con el query
      * buscara todos los registros unicamente con los campos indicados
      */
-    Usuario.find({}, 'nombre apPaterno email img role')
+    Usuario.find({}, 'nombre apPaterno email img role google')
         .skip(desde)
         .limit(5)
         .exec(

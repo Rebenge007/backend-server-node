@@ -114,6 +114,7 @@ app.post('/google', async(req, res) => {
 app.post('/', (req, res) => {
     var body = req.body;
     Usuario.findOne({ email: body.email }, (err, usuarioBD) => {
+        console.log(' ..: ', usuarioBD);
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -146,7 +147,8 @@ app.post('/', (req, res) => {
             ok: true,
             usuario: usuarioBD,
             token: token,
-            id: usuarioBD._id
+            id: usuarioBD._id,
+            msg: 'autenticacion nomal correcta'
         });
     });
 });
