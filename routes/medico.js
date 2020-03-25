@@ -9,7 +9,7 @@ var app = express();
 var Medico = require('../models/medico');
 
 // ================================================================
-//  Ontener todos los Medicos Inicio
+//  Ontener todos los Medicos
 // ================================================================
 app.get('/', (req, res, next) => {
     var desde = req.query.desde || 0;
@@ -38,9 +38,36 @@ app.get('/', (req, res, next) => {
             }
         );
 });
+
 // ================================================================
-//  Ontener todos los Medicos Fin
+//  Ontener Médico
 // ================================================================
+app.get('/:id', (req, res) => {
+    var id = req.params.id;
+    Medico.findById(id)
+        .populate('usuario', 'nombre email img')
+        .populate('hospital')
+        .exec((err, medico) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'Error al buscar el medico seleccionado',
+                    errors: err
+                });
+            }
+            if (!medico) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'El medico con el id ' + id + 'No existe ',
+                    errors: 'No existe un medico con ese id'
+                });
+            }
+            res.status(200).json({
+                ok: true,
+                medico: medico
+            });
+        });
+})
 
 // ================================================================
 //  Actualizar Hospital Inicio

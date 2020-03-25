@@ -13,7 +13,7 @@ app.get('/:id', (req, res, next) => {
     var id = req.params.id;
     Hospital.findById(id)
         .populate('usuario', 'nombre img email')
-        .exec((err, hospital => {
+        .exec((err, hospital) => {
             if (err) {
                 res.status(500).json({
                     ok: false,
@@ -34,7 +34,7 @@ app.get('/:id', (req, res, next) => {
                 hospital: hospital
             });
 
-        }));
+        });
 });
 
 // ================================================================
