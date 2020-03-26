@@ -69,7 +69,8 @@ app.post('/google', async(req, res) => {
                     mensaje: 'login google backend',
                     usuario: usuarioBD,
                     token: token,
-                    id: usuarioBD._id
+                    id: usuarioBD._id,
+                    menu: obtenerMenu(usuarioBD.role)
                 });
             }
         } else { // el usuario no existe es necesario crearlo
@@ -96,7 +97,8 @@ app.post('/google', async(req, res) => {
                     ok: true,
                     usuario: usuarioBD,
                     token: token,
-                    id: usuarioBD._id
+                    id: usuarioBD._id,
+                    menu: obtenerMenu(usuarioBD.role)
                 });
             });
         }
@@ -148,9 +150,65 @@ app.post('/', (req, res) => {
             usuario: usuarioBD,
             token: token,
             id: usuarioBD._id,
+            menu: obtenerMenu(usuarioBD.role),
             msg: 'autenticacion nomal correcta'
         });
     });
 });
+
+function obtenerMenu(ROLE) {
+    console.log(ROLE);
+    var menu = [{
+            titulo: 'Main Section',
+            icono: 'mdi mdi-gauge',
+            submenu: [{
+                    titulo: 'Dashboard',
+                    url: '/dashboard'
+                },
+                {
+                    titulo: 'ProgressBar',
+                    url: '/progress'
+                },
+                {
+                    titulo: 'Gráficas',
+                    url: '/graficas1'
+                },
+                {
+                    titulo: 'Promesas',
+                    url: '/promesas'
+                },
+                {
+                    titulo: 'Rxjs',
+                    url: '/rxjs'
+                }
+            ]
+        },
+        {
+            titulo: 'Mantenimientos',
+            icono: 'mdi mdi-folder-lock-open',
+            submenu: [
+                // {
+                //     titulo: 'Usuarios',
+                //     url: '/usuarios'
+                // },
+                {
+                    titulo: 'Hospitales',
+                    url: '/hospitales'
+                },
+                {
+                    titulo: 'Medicos',
+                    url: '/medicos'
+                }
+            ]
+        }
+    ];
+    if (ROLE === 'ADMIN_ROLE') {
+        menu[1].submenu.unshift({
+            titulo: 'Usuarios',
+            url: '/usuarios'
+        });
+    }
+    return menu;
+}
 
 module.exports = app;
